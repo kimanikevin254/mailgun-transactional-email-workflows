@@ -4,7 +4,7 @@ import { redisConfig } from "../config/redis.config";
 import { mgClient } from "../config/mailgun.config";
 import { IMailgunClient } from "mailgun.js/Interfaces";
 import { OrderStatus } from "../types";
-import { EmailTemplateManager } from "../templates/email-templates";
+import { EmailTemplateManager } from "../email-templates";
 import { MailgunMessageData } from "mailgun.js";
 
 export interface NotificationJob {

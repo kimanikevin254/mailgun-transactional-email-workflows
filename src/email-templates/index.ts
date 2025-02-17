@@ -20,7 +20,7 @@ export class EmailTemplateManager {
         };
 
         statuses.forEach((status) => {
-            const htmlTemplate = readFileSync(`src/templates/html/${status}.html`, 'utf-8');
+            const htmlTemplate = readFileSync(`src/email-templates/html/${status}.html`, 'utf-8');
 
             this.templates.set(status, {
                 subject: subjects[status],
