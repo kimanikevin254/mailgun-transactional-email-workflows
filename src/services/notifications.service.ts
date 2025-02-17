@@ -3,16 +3,9 @@ import { QUEUE_NAMES, ShippingNotificationsQueue } from "../config/queues.config
 import { redisConfig } from "../config/redis.config";
 import { mgClient } from "../config/mailgun.config";
 import { IMailgunClient } from "mailgun.js/Interfaces";
-import { OrderStatus } from "../types";
 import { EmailTemplateManager } from "../email-templates";
 import { MailgunMessageData } from "mailgun.js";
-
-export interface NotificationJob {
-    email: string;
-    trackingNumber: string;
-    status: OrderStatus;
-    metadata?: Record<string, any>;
-}
+import { NotificationJob } from "../types";
 
 export class NotificationService {
     private queue: Queue;
@@ -70,11 +63,11 @@ export class NotificationService {
 
     async queueNotification(data: NotificationJob) {
         await this.queue.add('send-notification', data, {
-            // attempts: 5, // number of retry attempts before failing permanently
-            // backoff: {
-            //     type: 'exponential', // Retry using exponential backoff
-            //     delay: 5000, // Delay in ms before retrying
-            // }
+            attempts: 5, // number of retry attempts before failing permanently
+            backoff: {
+                type: 'exponential', // Retry using exponential backoff
+                delay: 5000, // Delay in ms before retrying
+            }
         });
         console.log('Job queued successfully');
     }
