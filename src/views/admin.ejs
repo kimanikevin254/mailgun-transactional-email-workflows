@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Panel - Manage Orders</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">📦 Order Status Management</h2>
+
+        <table class="table table-bordered bg-white">
+            <thead class="table-dark">
+                <tr>
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Current Status</th>
+                    <th>Update Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% orders.forEach(order => { %>
+                <tr>
+                    <td><%= order.id %></td>
+                    <td>
+                        <p>Name: <%= order.user.name %></p>
+                        <p>Email: <%= order.user.email %></p>
+                    </td>
+                    <td><span class="badge bg-info" id="badge-<%= order.id %>"><%= order.status %></span></td>
+                    <td>
+                        <form id="orderForm-<%= order.id %>">
+                            <input type="hidden" name="orderId" value="<%= order.id %>">
+                            <select name="status" class="form-select">
+                                <option value="shipped" <%= order.status === 'shipped' ? 'selected' : '' %>>Shipped</option>
+                                <option value="out_for_delivery" <%= order.status === 'out_for_delivery' ? 'selected' : '' %>>Out for Delivery</option>
+                                <option value="delivered" <%= order.status === 'delivered' ? 'selected' : '' %>>Delivered</option>
+                            </select>
+                            <button type="button" class="btn btn-primary mt-2" onclick="updateOrderStatus('<%= order.id %>')">Save</button>
+                        </form>                        
+                    </td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function updateOrderStatus(orderId) {
+            const form = document.getElementById(`orderForm-${orderId}`);
+            const status = form.querySelector("select[name='status']").value;
+            const badge = document.getElementById(`badge-${orderId}`);
+
+            fetch(`/orders/${orderId}`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ status })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // alert("Order status updated successfully!");
+                    badge.innerText = data.updatedStatus;
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+</body>
+</html>
