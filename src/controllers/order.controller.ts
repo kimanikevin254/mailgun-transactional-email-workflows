@@ -3,10 +3,16 @@ import { Order } from "../database/entity/order.entity";
 import { AppDataSource } from "../database/data-source";
 import { NotificationService } from "../services/notifications.service";
 import { OrderStatus } from "../types";
+import { Repository } from "typeorm";
 
 export class OrderController {
-    private orderRepository = AppDataSource.getRepository(Order);
-    private notificationService = new NotificationService();
+    private orderRepository: Repository<Order>;
+    private notificationService: NotificationService;
+
+    constructor() {
+        this.orderRepository = AppDataSource.getRepository(Order);
+        this.notificationService = new NotificationService();
+    }
 
     index = async (req: Request, res: Response) => {
         const orders = await this.orderRepository.find({ 
