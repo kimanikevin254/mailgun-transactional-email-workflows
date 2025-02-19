@@ -1,17 +1,14 @@
 import { Request, Response } from "express";
 import { Order } from "../database/entity/order.entity";
 import { AppDataSource } from "../database/data-source";
-import { NotificationService } from "../services/notifications.service";
 import { OrderStatus } from "../types";
 import { Repository } from "typeorm";
 
 export class OrderController {
     private orderRepository: Repository<Order>;
-    private notificationService: NotificationService;
 
     constructor() {
         this.orderRepository = AppDataSource.getRepository(Order);
-        this.notificationService = new NotificationService();
     }
 
     index = async (req: Request, res: Response) => {
@@ -76,16 +73,6 @@ export class OrderController {
             // Update order status in DB
             order.setStatus(status);
             await this.orderRepository.save(order);
-
-            // Send notification
-            this.notificationService.queueNotification({
-                email: order.user.email,
-                trackingNumber: order.trackingNumber,
-                status,
-                metadata: {
-                    name: order.user.name.split(' ')[0]
-                }
-            })
 
             res.status(200).json({ success: true, updatedStatus: status, message: 'Order status updated successfully' })
         } catch (error) {
