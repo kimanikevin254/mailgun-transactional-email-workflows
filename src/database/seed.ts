@@ -2,6 +2,16 @@ import { AppDataSource } from "./data-source";
 import { Order } from "./entity/order.entity";
 import { User } from "./entity/user.entity";
 
+const userInfo = {
+    name: 'Kevin Kimani',
+    email: 'kimanikevin254@gmail.com'
+} as User;
+
+const orderInfo = {
+    trackingNumber: 'TRACK12345',
+    status: 'shipped',
+} as Order;
+
 async function seed() {
     try {
         await AppDataSource.initialize();
@@ -9,12 +19,12 @@ async function seed() {
 
         // Create a sample user
         const userRepository = AppDataSource.getRepository(User);
-        let user = await userRepository.findOneBy({ email: "kimanikevin254@gmail.com" });
+        let user = await userRepository.findOneBy({ email: userInfo.email });
 
         if (!user) {
             user = userRepository.create({
-                name: "Kevin Kimani",
-                email: "kimanikevin254@gmail.com",
+                name: userInfo.name,
+                email: userInfo.email,
             });
 
             await userRepository.save(user);
@@ -23,12 +33,12 @@ async function seed() {
 
         // Create a sample order
         const orderRepository = AppDataSource.getRepository(Order);
-        const orderExists = await orderRepository.findOneBy({ trackingNumber: "TRACK12345" });
+        const orderExists = await orderRepository.findOneBy({ trackingNumber: orderInfo.trackingNumber });
 
         if (!orderExists) {
             const order = orderRepository.create({
-                trackingNumber: "TRACK12345",
-                status: "shipped", // Initial order status
+                trackingNumber: orderInfo.trackingNumber,
+                status: orderInfo.status, // Initial order status
                 user: user, // Link order to the user
             });
 
