@@ -55,6 +55,7 @@ export class OrderController {
                     trackingNumber: true,
                     status: true,
                     user: {
+                        name: true,
                         email: true,
                     }
                 },
@@ -81,6 +82,9 @@ export class OrderController {
                 email: order.user.email,
                 trackingNumber: order.trackingNumber,
                 status,
+                metadata: {
+                    name: order.user.name.split(' ')[0]
+                }
             })
 
             res.status(200).json({ success: true, updatedStatus: status, message: 'Order status updated successfully' })
