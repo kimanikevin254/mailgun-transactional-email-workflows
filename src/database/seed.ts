@@ -3,8 +3,8 @@ import { Order } from "./entity/order.entity";
 import { User } from "./entity/user.entity";
 
 const userInfo = {
-    name: 'Kevin Kimani',
-    email: 'kimanikevin254@gmail.com'
+    name: '<YOUR-NAME>',
+    email: '<YOUR-EMAIL-ADDRESS>'
 } as User;
 
 const orderInfo = {
