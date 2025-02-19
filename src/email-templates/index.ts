@@ -14,9 +14,9 @@ export class EmailTemplateManager {
         // Load each template for different statuses
         const statuses: OrderStatus[] = ["shipped", "out_for_delivery", "delivered"];
         const subjects: Record<OrderStatus, string> = {
-            shipped: "Your Order is on the Way! 🚚",
-            out_for_delivery: "Your Order is Arriving Today! 🎯",
-            delivered: "Delivered! We Hope You Love It 💝"
+            shipped: "Your Order Has Been Shipped! ✈️",
+            out_for_delivery: "Your Order is Out for Delivery! 🚚",
+            delivered: "Your Order Has Been Delivered! 🎉"
         };
 
         statuses.forEach((status) => {
@@ -37,7 +37,6 @@ export class EmailTemplateManager {
         return template;
     }
 
-    // Method to render HTML and Text templates using EJS
     renderTemplate(templateString: string, data: Record<string, any>): string {
         return ejs.render(templateString, data); // Render the template with the provided data
     }
