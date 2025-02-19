@@ -5,6 +5,10 @@ export const QUEUE_NAMES = {
     SHIPPING_NOTICATIONS: 'shipping-notifications',
 };
 
-export const ShippingNotificationsQueue = new Queue(QUEUE_NAMES.SHIPPING_NOTICATIONS, {
+export const JOB_NAMES = {
+    SEND_NOTIFICATION: 'send-notification',
+};
+
+export const SHIPPING_NOTICATIONS_QUEUE = new Queue(QUEUE_NAMES.SHIPPING_NOTICATIONS, {
     connection: redisConfig
 });

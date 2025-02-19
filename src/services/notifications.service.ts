@@ -1,5 +1,5 @@
 import { Job, Queue, Worker } from "bullmq";
-import { QUEUE_NAMES, ShippingNotificationsQueue } from "../config/queues.config";
+import { QUEUE_NAMES, SHIPPING_NOTICATIONS_QUEUE, JOB_NAMES } from "../config/queues.config";
 import { redisConfig } from "../config/redis.config";
 import { mgClient } from "../config/mailgun.config";
 import { IMailgunClient } from "mailgun.js/Interfaces";
@@ -13,7 +13,7 @@ export class NotificationService {
     private templateManager: EmailTemplateManager;
     
     constructor() {
-        this.queue = ShippingNotificationsQueue;
+        this.queue = SHIPPING_NOTICATIONS_QUEUE;
         this.mailgunClient = mgClient;
         this.templateManager = new EmailTemplateManager();
         this.setupWorker();
@@ -62,7 +62,7 @@ export class NotificationService {
     }
 
     async queueNotification(data: NotificationJob) {
-        await this.queue.add('send-notification', data, {
+        await this.queue.add(JOB_NAMES.SEND_NOTIFICATION, data, {
             attempts: 5, // number of retry attempts before failing permanently
             backoff: {
                 type: 'exponential', // Retry using exponential backoff
