@@ -25,8 +25,8 @@ export class EmailTemplateManager {
             this.templates.set(status, {
                 subject: subjects[status],
                 html: htmlTemplate,
-            })
-        })
+            });
+        });
     }
 
     getTemplate(status: OrderStatus): EmailTemplate {
