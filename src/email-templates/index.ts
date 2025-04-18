@@ -3,7 +3,7 @@ import { EmailTemplate, OrderStatus } from "../types";
 import ejs from 'ejs';
 
 export class EmailTemplateManager {
-    private templates: Map<OrderStatus, EmailTemplate>
+    private templates: Map<OrderStatus, EmailTemplate>;
 
     constructor() {
         this.templates = new Map();
